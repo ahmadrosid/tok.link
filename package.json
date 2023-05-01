@@ -12,7 +12,8 @@
     "dev": "npm run build && concurrently \"npm:dev:*\"",
     "start": "NODE_ENV=production npm run dev:superflare",
     "build:css": "tailwindcss -i ./global.css -o ./app/tailwind.css",
-    "dev:css": "tailwindcss -i ./global.css -o ./app/tailwind.css --watch"
+    "dev:css": "tailwindcss -i ./global.css -o ./app/tailwind.css --watch",
+    "deploy": "npx wrangler publish -j"
   },
   "keywords": [],
   "license": "MIT",

@@ -1,5 +1,5 @@
 import { type LoaderArgs, redirect, json } from "@remix-run/cloudflare";
-import { useLoaderData } from "@remix-run/react";
+import { useLoaderData, useNavigation } from "@remix-run/react";
 import { ArrowUpRight, Clock, Edit2, Share2 } from "lucide-react";
 import { Button } from "~/components/button";
 import {
@@ -16,7 +16,7 @@ import { User } from "~/models/User";
 import toast from "react-hot-toast";
 import DialogEditPath from "~/components/dialog-edit-path";
 
-export async function loader({ context: { auth } }: LoaderArgs) {
+export async function loader({ request, context: { auth } }: LoaderArgs) {
   if (!(await auth.check(User))) {
     return redirect("/login");
   }
@@ -29,11 +29,12 @@ export async function loader({ context: { auth } }: LoaderArgs) {
   return json({
     user,
     histories,
-    host: "http://127.0.0.1:8788",
+    host: request.headers.get("refer") || "http://127.0.0.1:8788",
   });
 }
 
 export default function Histories() {
+  const navigation = useNavigation();
   const { host, histories } = useLoaderData<typeof loader>();
   const notify = () => toast.success("Link copied. Ready to paste and share!");
 
