@@ -30,6 +30,7 @@ export async function action({ request, context: { auth } }: ActionArgs) {
   let title = formData.get("title") as string;
   let route = formData.get("route") as string;
   let id = formData.get("id") as unknown as number;
+
   if (id) {
     let path = await Path.find(id);
     if (!path) {
@@ -37,6 +38,7 @@ export async function action({ request, context: { auth } }: ActionArgs) {
     }
     return handleUpdate({ path, url, title, route });
   }
+
   if (!route) {
     route = nanoid(6);
   }

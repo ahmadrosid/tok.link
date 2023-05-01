@@ -5,7 +5,7 @@ import { Visitor } from "~/models/Visitor";
 export async function loader({ request, params }: LoaderArgs) {
   const path = await Path.where("route", params.route || "").first();
   if (!path) return redirect("/404");
-  const visitor = await Visitor.create({
+  await Visitor.create({
     user_id: path.user_id,
     path_id: path.id,
     ip_address: request.headers.get("cf-connecting-ip"),
