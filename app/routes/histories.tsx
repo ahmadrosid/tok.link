@@ -15,6 +15,7 @@ import { Path } from "~/models/Path";
 import { User } from "~/models/User";
 import toast from "react-hot-toast";
 import DialogEditPath from "~/components/dialog-edit-path";
+import { timeAgo } from "~/lib/utils";
 
 export async function loader({ request, context: { auth } }: LoaderArgs) {
   if (!(await auth.check(User))) {
@@ -66,7 +67,7 @@ export default function Histories() {
                 <div className="flex justify-between border-t pt-2 w-full items-center">
                   <p className="text-sm inline-flex gap-2 items-center text-gray-500">
                     <Clock className="w-4 h-4" />
-                    {new Date(item.createdAt).toLocaleDateString()}
+                    {timeAgo(new Date(item.createdAt))}
                   </p>
                   <div className="flex gap-2">
                     <DialogEditPath item={item} />
