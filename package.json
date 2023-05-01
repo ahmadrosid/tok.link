@@ -18,6 +18,8 @@
   "license": "MIT",
   "dependencies": {
     "@cloudflare/kv-asset-handler": "^0.3.0",
+    "@faker-js/faker": "^7.6.0",
+    "@radix-ui/react-label": "^2.0.1",
     "@radix-ui/react-slot": "^1.0.1",
     "@remix-run/cloudflare": "^1.14.1",
     "@remix-run/react": "^1.14.1",
@@ -26,6 +28,8 @@
     "class-variance-authority": "^0.6.0",
     "clsx": "^1.2.1",
     "isbot": "^3.6.6",
+    "lucide-react": "^0.190.0",
+    "nanoid": "^4.0.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "superflare": "*",

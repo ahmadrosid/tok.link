@@ -1,6 +1,6 @@
 import { Link } from "@remix-run/react";
 import { Button } from "~/components/button";
-import { Input } from "~/components/input";
+import GenerateLink from "~/components/generate-link";
 
 export default function Index() {
   return (
@@ -22,21 +22,7 @@ export default function Index() {
           </div>
         </div>
       </div>
-      <div className="flex justify-center flex-col gap-4">
-        <div className="text-center grid gap-2">
-          <h1 className="text-5xl font-bold tracking-tight">Tok.link</h1>
-          <p>
-            The Best and The Shortest Link Shortener for known your audience!
-          </p>
-        </div>
-        <div className="flex gap-2">
-          <Input
-            placeholder="https://example.com/long-url..."
-            className="bg-white flex-1"
-          />
-          <Button>Short It!</Button>
-        </div>
-      </div>
+      <GenerateLink />
     </div>
   );
 }

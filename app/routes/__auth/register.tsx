@@ -4,7 +4,8 @@ import { User } from "~/models/User";
 import { hash } from "superflare";
 import { Button } from "~/components/button";
 import { Input } from "~/components/input";
-import ChevronLeft from "~/components/chevron-left";
+import { Label } from "~/components/label";
+import { ChevronLeft } from "lucide-react";
 
 export async function action({ request, context: { auth } }: ActionArgs) {
   if (await auth.check(User)) {
@@ -47,13 +48,13 @@ export default function Register() {
       <Form method="post" className="grid gap-2 w-72">
         <h1 className="font-bold text-center text-2xl">Register</h1>
 
-        <div>
-          <label htmlFor="email">Email</label>
+        <div className="space-y-2">
+          <Label htmlFor="email">Email</Label>
           <Input name="email" type="email" required />
         </div>
 
-        <div>
-          <label htmlFor="password">Password</label>
+        <div className="space-y-2">
+          <Label htmlFor="password">Password</Label>
           <Input name="password" type="password" required />
         </div>
 
@@ -61,7 +62,11 @@ export default function Register() {
           <div style={{ color: "red" }}>{actionData.error}</div>
         )}
 
-        <Button type="submit">Register</Button>
+        <div className="py-2 w-full">
+          <Button type="submit" className="w-full">
+            Register
+          </Button>
+        </div>
 
         <Link to="/login">
           <Button variant="link" className="w-full">

@@ -3,7 +3,8 @@ import { json, redirect, type ActionArgs } from "@remix-run/cloudflare";
 import { User } from "~/models/User";
 import { Input } from "~/components/input";
 import { Button } from "~/components/button";
-import ChevronLeft from "~/components/chevron-left";
+import { Label } from "~/components/label";
+import { ChevronLeft } from "lucide-react";
 
 export async function action({ request, context: { auth } }: ActionArgs) {
   if (await auth.check(User)) {
@@ -39,13 +40,13 @@ export default function Login() {
       <Form method="post" className="grid gap-2 w-72">
         <h1 className="font-bold text-center text-2xl">Log in</h1>
 
-        <div>
-          <label htmlFor="email">Email</label>
+        <div className="space-y-2">
+          <Label htmlFor="email">Email</Label>
           <Input name="email" type="email" required />
         </div>
 
-        <div>
-          <label htmlFor="password">Password</label>
+        <div className="space-y-2">
+          <Label htmlFor="password">Password</Label>
           <Input name="password" type="password" required />
         </div>
 
@@ -53,7 +54,11 @@ export default function Login() {
           <div style={{ color: "red" }}>{actionData.error}</div>
         )}
 
-        <Button type="submit">Log in</Button>
+        <div className="py-2">
+          <Button type="submit" className="w-full">
+            Log in
+          </Button>
+        </div>
 
         <Link to="/register">
           <Button variant="link" className="w-full">
