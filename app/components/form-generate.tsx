@@ -7,9 +7,7 @@ export default function FormGenerate() {
   const navigation = useNavigation();
 
   let isLoaderSubmission =
-    navigation.state === "loading" &&
-    navigation.formMethod === "POST" &&
-    navigation.formAction === navigation.location.pathname;
+    navigation.state === "loading" && navigation.formMethod === "POST";
 
   return (
     <Form action="/path" method="post" className="flex gap-2">

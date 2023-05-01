@@ -29,13 +29,14 @@ export async function loader({ request, context: { auth } }: LoaderArgs) {
   return json({
     user,
     histories,
-    host: request.headers.get("refer") || "http://127.0.0.1:8788",
+    scheme: (request.headers.get("cf-visitor") as any)?.scheme || "http",
+    host: request.headers.get("host") || "127.0.0.1:8788",
   });
 }
 
 export default function Histories() {
   const navigation = useNavigation();
-  const { host, histories } = useLoaderData<typeof loader>();
+  const { host, scheme, histories } = useLoaderData<typeof loader>();
   const notify = () => toast.success("Link copied. Ready to paste and share!");
 
   return (
@@ -49,8 +50,11 @@ export default function Histories() {
               <CardHeader>
                 <CardTitle>
                   <div className="w-full flex justify-between">
-                    <p>{`${host}/${item.route}`}</p>
-                    <a target="_blank" href={`${host}/${item.route}`}>
+                    <p>{`${scheme}://${host}/${item.route}`}</p>
+                    <a
+                      target="_blank"
+                      href={`${scheme}://${host}/${item.route}`}
+                    >
                       <Button variant={"outline"} size="sm">
                         <ArrowUpRight className="w-4 h-4" />
                       </Button>
