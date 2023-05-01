@@ -1,6 +1,6 @@
 import { type LoaderArgs, redirect, json } from "@remix-run/cloudflare";
-import { useLoaderData, useNavigation } from "@remix-run/react";
-import { ArrowUpRight, Clock, Edit2, Share2 } from "lucide-react";
+import { useLoaderData } from "@remix-run/react";
+import { ArrowUpRight, Clock, Share2 } from "lucide-react";
 import { Button } from "~/components/button";
 import {
   Card,
@@ -35,7 +35,6 @@ export async function loader({ request, context: { auth } }: LoaderArgs) {
 }
 
 export default function Histories() {
-  const navigation = useNavigation();
   const { host, scheme, histories } = useLoaderData<typeof loader>();
   const notify = () => toast.success("Link copied. Ready to paste and share!");
 
