@@ -7,6 +7,8 @@ import {
   Scripts,
   ScrollRestoration,
 } from "@remix-run/react";
+import { Toaster } from "react-hot-toast";
+import { ClientOnly } from "remix-utils";
 import styles from "~/tailwind.css";
 
 export const meta: MetaFunction = () => ({
@@ -30,6 +32,9 @@ export default function App() {
       </head>
       <body>
         <Outlet />
+        <ClientOnly fallback={null}>
+          {() => <Toaster position="bottom-center" reverseOrder={false} />}
+        </ClientOnly>
         <ScrollRestoration />
         <Scripts />
         <LiveReload />

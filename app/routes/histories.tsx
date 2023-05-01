@@ -1,6 +1,6 @@
 import { type LoaderArgs, redirect, json } from "@remix-run/cloudflare";
 import { useLoaderData } from "@remix-run/react";
-import { Clock, Edit2, Share2 } from "lucide-react";
+import { ArrowUpRight, Clock, Edit2, Share2 } from "lucide-react";
 import { Button } from "~/components/button";
 import {
   Card,
@@ -10,10 +10,11 @@ import {
   CardTitle,
 } from "~/components/card";
 import FormGenerate from "~/components/form-generate";
-import GenerateLink from "~/components/generate-link";
 import Navigation from "~/components/navigation";
 import { Path } from "~/models/Path";
 import { User } from "~/models/User";
+import toast from "react-hot-toast";
+import DialogEditPath from "~/components/dialog-edit-path";
 
 export async function loader({ context: { auth } }: LoaderArgs) {
   if (!(await auth.check(User))) {
@@ -21,16 +22,20 @@ export async function loader({ context: { auth } }: LoaderArgs) {
   }
 
   const user = (await auth.user(User)) as User;
-  const histories = await Path.where("user_id", user.id).get();
+  const histories = await Path.where("user_id", user.id)
+    .orderBy("createdAt", "desc")
+    .get();
 
   return json({
     user,
     histories,
+    host: "http://127.0.0.1:8788",
   });
 }
 
 export default function Histories() {
-  const { user, histories } = useLoaderData<typeof loader>();
+  const { host, histories } = useLoaderData<typeof loader>();
+  const notify = () => toast.success("Link copied. Ready to paste and share!");
 
   return (
     <div className="flex justify-center p-8 h-screen">
@@ -41,7 +46,16 @@ export default function Histories() {
           {histories.map((item) => (
             <Card key={item.id}>
               <CardHeader>
-                <CardTitle>https://tok.link/{item.route}</CardTitle>
+                <CardTitle>
+                  <div className="w-full flex justify-between">
+                    <p>{`${host}/${item.route}`}</p>
+                    <a target="_blank" href={`${host}/${item.route}`}>
+                      <Button variant={"outline"} size="sm">
+                        <ArrowUpRight className="w-4 h-4" />
+                      </Button>
+                    </a>
+                  </div>
+                </CardTitle>
                 <CardDescription>{item.url}</CardDescription>
               </CardHeader>
               <CardFooter>
@@ -51,11 +65,16 @@ export default function Histories() {
                     {new Date(item.createdAt).toLocaleDateString()}
                   </p>
                   <div className="flex gap-2">
-                    <Button size="sm" variant={"outline"}>
-                      <Edit2 className="w-3 h-3 mr-2" />
-                      Edit
-                    </Button>
-                    <Button size="sm" variant={"outline"}>
+                    <DialogEditPath item={item} />
+                    <Button
+                      onClick={() => {
+                        window.navigator.clipboard
+                          .writeText(`${host}/${item.route}`)
+                          .finally(notify);
+                      }}
+                      size="sm"
+                      variant={"outline"}
+                    >
                       <Share2 className="w-3 h-3 mr-2" />
                       Share
                     </Button>
