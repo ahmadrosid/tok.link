@@ -1,18 +1,17 @@
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogTitle,
   DialogTrigger,
-  DialogFooter,
   DialogHeader,
+  DialogFooter,
 } from "~/components/dialog";
 import { Label } from "@radix-ui/react-label";
 import { Input } from "~/components/input";
 import { Button } from "./button";
-import { Edit2 } from "lucide-react";
-import { Form } from "@remix-run/react";
-import { FormEventHandler, useRef } from "react";
+import { Edit2, Loader2 } from "lucide-react";
+import { Form, useNavigation } from "@remix-run/react";
+import { useEffect, useState } from "react";
 
 type Props = {
   item: {
@@ -24,11 +23,25 @@ type Props = {
 };
 
 export default function DialogEditPath({ item }: Props) {
-  const formRef = useRef<HTMLFormElement | null>(null);
+  const [isOpen, setIsOpen] = useState(false);
+  const navigation = useNavigation();
+
+  let isLoaderSubmission =
+    ["loading", "submitting"].includes(navigation.state) &&
+    navigation.formData?.get("id") === `${item.id}` &&
+    navigation.formData?.get("action") === "update" &&
+    navigation.formMethod === "post";
+
+  useEffect(() => {
+    if (!isLoaderSubmission && isOpen) {
+      setIsOpen(false);
+    }
+  }, [isLoaderSubmission]);
+
   return (
-    <Dialog>
+    <Dialog open={isOpen}>
       <DialogTrigger asChild>
-        <Button size="sm" variant={"outline"}>
+        <Button onClick={() => setIsOpen(true)} size="sm" variant={"outline"}>
           <Edit2 className="w-3 h-3 mr-2" />
           Edit
         </Button>
@@ -36,14 +49,12 @@ export default function DialogEditPath({ item }: Props) {
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>Edit Link</DialogTitle>
-          <DialogDescription>
-            Make changes to your link here. Click save when you're done.
-          </DialogDescription>
         </DialogHeader>
-        <Form ref={formRef} method="post" action="/path">
+        <Form method="post" action="/path">
           <input type="hidden" name="id" value={item.id} />
+          <input type="hidden" name="action" value={"update"} />
           <div className="grid gap-4 py-4">
-            <div className="grid grid-cols-4 items-center gap-4">
+            <div className="space-y-2">
               <Label htmlFor="route" className="text-right">
                 Route
               </Label>
@@ -54,7 +65,7 @@ export default function DialogEditPath({ item }: Props) {
                 className="col-span-3"
               />
             </div>
-            <div className="grid grid-cols-4 items-center gap-4">
+            <div className="space-y-2">
               <Label htmlFor="url" className="text-right">
                 Url
               </Label>
@@ -65,7 +76,7 @@ export default function DialogEditPath({ item }: Props) {
                 className="col-span-3"
               />
             </div>
-            <div className="grid grid-cols-4 items-center gap-4">
+            <div className="space-y-2">
               <Label htmlFor="title" className="text-right">
                 Title
               </Label>
@@ -77,12 +88,16 @@ export default function DialogEditPath({ item }: Props) {
               />
             </div>
           </div>
+
+          <DialogFooter>
+            <Button type="submit" disabled={isLoaderSubmission}>
+              {isLoaderSubmission && (
+                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+              )}
+              Save changes
+            </Button>
+          </DialogFooter>
         </Form>
-        <DialogFooter>
-          <Button onClick={() => formRef.current?.submit()} type="submit">
-            Save changes
-          </Button>
-        </DialogFooter>
       </DialogContent>
     </Dialog>
   );

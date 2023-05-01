@@ -14,7 +14,7 @@ async function handleUpdate({ path, url, title, route }: UpdateRequest) {
   path.url = url;
   path.title = title || "";
   path.route = route;
-  path.save();
+  await path.save();
   return redirect("/histories");
 }
 
@@ -29,12 +29,17 @@ export async function action({ request, context: { auth } }: ActionArgs) {
   let url = formData.get("url") as string;
   let title = formData.get("title") as string;
   let route = formData.get("route") as string;
+  let action = formData.get("action") as string;
   let id = formData.get("id") as unknown as number;
 
   if (id) {
     let path = await Path.find(id);
     if (!path) {
       return json({ error: "Path not found!" });
+    }
+    if (action === "delete") {
+      await path.delete();
+      return redirect("/histories");
     }
     return handleUpdate({ path, url, title, route });
   }

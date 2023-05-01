@@ -8,10 +8,12 @@ export default function FormGenerate() {
 
   let isLoaderSubmission =
     ["loading", "submitting"].includes(navigation.state) &&
+    navigation.formData?.get("action") === "create" &&
     navigation.formMethod === "post";
 
   return (
     <Form action="/path" method="post" className="flex gap-2">
+      <input name="action" type="hidden" value={"create"} />
       <Input
         name="url"
         required

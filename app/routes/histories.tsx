@@ -16,6 +16,7 @@ import { User } from "~/models/User";
 import toast from "react-hot-toast";
 import DialogEditPath from "~/components/dialog-edit-path";
 import { timeAgo } from "~/lib/utils";
+import DeleteButton from "~/components/delete-button";
 
 export async function loader({ request, context: { auth } }: LoaderArgs) {
   if (!(await auth.check(User))) {
@@ -83,6 +84,7 @@ export default function Histories() {
                       <Share2 className="w-3 h-3 mr-2" />
                       Share
                     </Button>
+                    <DeleteButton id={item.id} action="/path" />
                   </div>
                 </div>
               </CardFooter>
