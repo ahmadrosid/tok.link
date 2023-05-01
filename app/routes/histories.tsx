@@ -60,8 +60,8 @@ export default function Histories() {
               </CardHeader>
               <CardFooter>
                 <div className="flex justify-between border-t pt-2 w-full items-center">
-                  <p className="text-sm inline-flex gap-2 items-center">
-                    <Clock className="text-gray-300 w-4 h-4" />
+                  <p className="text-sm inline-flex gap-2 items-center text-gray-500">
+                    <Clock className="w-4 h-4" />
                     {new Date(item.createdAt).toLocaleDateString()}
                   </p>
                   <div className="flex gap-2">
