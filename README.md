@@ -1,6 +1,8 @@
-# Superflare + Remix
+# Tok.link
 
-This is a template for using Superflare + Remix.
+![demo](./demo.png)
+
+Example project of Superflare + Remix.
 
 ```bash
 npm run dev
