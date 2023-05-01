@@ -1,6 +1,6 @@
 import { type LoaderArgs, redirect, json } from "@remix-run/cloudflare";
 import { useLoaderData } from "@remix-run/react";
-import CardNumber from "~/components/card-number";
+import CardAnalytic from "~/components/card-analytic";
 import GenerateLink from "~/components/generate-link";
 import Navigation from "~/components/navigation";
 import { Path } from "~/models/Path";
@@ -31,7 +31,7 @@ export async function loader({ context: { auth, env } }: LoaderArgs) {
     console.log("error", e);
   }
 
-  const numbers = {
+  const analytic = {
     links: {
       number: totalPaths,
       description: `${totalPaths} Total Links`,
@@ -45,14 +45,15 @@ export async function loader({ context: { auth, env } }: LoaderArgs) {
       description: `${totalUniqueVisitor} Unique Visitors`,
     },
   };
+
   return json({
     user,
-    numbers,
+    analytic,
   });
 }
 
 export default function Dashboard() {
-  const { numbers } = useLoaderData<typeof loader>();
+  const { analytic } = useLoaderData<typeof loader>();
 
   return (
     <div className="flex justify-center p-8 h-screen">
@@ -60,18 +61,18 @@ export default function Dashboard() {
         <Navigation path="dashboard" />
         <div className="py-8 space-y-8">
           <GenerateLink />
-          <CardNumber
-            number={numbers.links.number}
-            description={numbers.links.description}
+          <CardAnalytic
+            number={analytic.links.number}
+            description={analytic.links.description}
           />
           <div className="grid grid-cols-2 gap-8">
-            <CardNumber
-              number={numbers.visitor.number}
-              description={numbers.visitor.description}
+            <CardAnalytic
+              number={analytic.visitor.number}
+              description={analytic.visitor.description}
             />
-            <CardNumber
-              number={numbers.uniqueVisitor.number}
-              description={numbers.uniqueVisitor.description}
+            <CardAnalytic
+              number={analytic.uniqueVisitor.number}
+              description={analytic.uniqueVisitor.description}
             />
           </div>
         </div>
