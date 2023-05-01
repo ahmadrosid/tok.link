@@ -43,8 +43,6 @@ export async function action({ request, context: { auth } }: ActionArgs) {
     route = nanoid(6);
   }
 
-  await new Promise((resolve, _) => setTimeout(() => resolve(true), 2000));
-
   await Path.create({
     user_id: user.id,
     title,
